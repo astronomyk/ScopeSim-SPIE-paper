@@ -52,11 +52,59 @@ Where does ScopeSim get its data from?
 - Other packages
 
 
+What is ScopeSim?
+ScopeSim is a pythonic instrument data simulation framework, which allows the
+user to generate output data from an astronomical optical (telescope +
+instrument) system in a variety of formats. The package has been designed and
+written in such a way that is is capable of modelling any system that follows
+the standard astronomical optical train: a spectro-spatial distribution of light
+passing through a series of optical sub-systems (atmosphere, telescope,
+fore-optics, instrument) before being converted into photo-electrons in a
+detector.
+
+The software itself is agnostic to the optical train it must model, and
+relies on the information provided by so-called ``instrument packages''.
+These contain the descriptions of any optical aberations or effects incurred
+along the optical train, the data and/or values associated with these
+effects, and, in special cases, also the software implementation of any
+custom effects. The online ScopeSim documenation provides a detailed
+description of the data formats and interfaces that need to be observed when
+constructing an instrument package.
+
+The raison d'etre for ScopeSim is to fill the niche that exists between the
+two major families of observation simulations currently pursued by instrument
+consortia: the exposure time calculator (ETC) and the end-to-end (E2E ) model.
+ETCs provide the most basic information about the observability of a target,
+generally be referencing pre-calculated look-up tables, and are therefore
+well suited as general-purpose support tools for those interested in the
+capabilities of an instrument. E2E models are at the other extreme, and
+often recompute the paths of photons or light-rays through a detailed model
+of an optical system every time a simulation is run. The very high level of
+accuracy achieved by E2E simulations comes at the expense of compuational
+efficiency. Such simulation are indispensible for understanding the fine
+details of true optical characterises of an instrument, however they are
+impractical for rapid turn-around applications such as refining an
+observation strategy or determining the extent to which a bright field star
+will impact the outcome of a proposal.
+
+Given the ever increasing pressure for telescope time as well as the
+increasing complexity of instrumentation systems, there is a very real need
+for a set of observation simulation tools which allow astronomers to go
+beyond the single-value metric of an ETC, but does not require the
+infrastructure and time-investment associated with E2E simulations. In recent
+years several consortia have developed solutions to fill this niche, driven
+primarily by the needs of the in-house science team and the astronomical
+community. A prime example is the software suite developed by the JWST team
+[!cite JWST!]. Unfortunately though there is still no generic software
+package which allows astronomers to compare observations with different
+instruments on a single coherent framework. It is exactly this niche that
+ScopeSim aims to fill.
 
 
-
-
-
+Scope of simulations
+- Full raw data products for pipelines
+- Reduced stacked data for science feasibility studies
+- Restricted mode advanced ETC functionality
 
 
 
