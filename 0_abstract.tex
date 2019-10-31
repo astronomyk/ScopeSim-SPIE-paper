@@ -202,88 +202,71 @@ via Pull-Requests on the ScopeSim GitHub page.
 
 The ScopeSim template library
 +++++++++++++++++++++++++++++
+The ScopeSim template library is a collection of helper functions which produce
+Source objects to be observed by the ScopeSim engine. A Source object must
+contain a spatial and a spectral description of the target object. The spatial
+description can be in the form of a table of positions if the target objects are
+point sources, or as a flux map (e.g. FITS image, bitmap, etc.) is the the
+target is an extended object like a galaxy. The spectral description can either
+be a data array containing wavelength and flux information, or a simple
+description of a spectral source (e.g. "A0V") scaled to a certain magnitude
+(V=15).
+
+The associated spectrum, much like any input image can have any resolution,
+however it should be clear to the user that ScopeSim output data will never
+have better resolution than the original input data. If the user does not
+possess the spectra required to build a Source object, they can choose from a
+one of the in-built spectra from either the Pickles 1998 stellar spectra
+catalogue, or the Brown 2014 galaxy spectra catalogue.
+
+Given that the user will spend the majority of their time building a description
+of their target, and that the associated functions have nothing to do with the
+core code of the ScopeSim engine, we felt it prudent to maintain the
+ScopeSim_templates code in a separate package. This also allows code to be added
+and removed from the repository without affecting the ScopeSim engine package.
+Hence the template library can follow a completely independent release schedule.
 
 
+Instrument packages and the IRDB
+++++++++++++++++++++++++++++++++
+In order to maintain as much flexibility as possible, the ScopeSim engine
+code base must remain completely detached from any instrument specific data.
+Not only does this allow for a clean interface between the software design and
+development and the data being delivered by an instrument consortium, it
+allows the functionality of the software to written in a independently testable
+manner, and is just good software practice.
+
+As such any instrument specific data (e.g. transmission values, PSF
+descriptions, mode specific values, etc.) are keep in an zip archive and
+formatted according to a set of interface guidelines. Files belonging to a
+package are kept under version control on Github. Whenever a new package release
+is requested, these files are tested, bundled, and uploaded onto a server.
+
+ScopeSim downloads directly packages directly from this server whenever the user
+instructs ScopeSim to use a certain instrument for a simulation run. If the
+package has been used for a prior simulation, it will be loaded from the local
+astropy cache folder, unless a newer version is available. In this case the
+newer version is downloaded again. This caching system allows ScopeSim to also
+work when the host computer is offline.
+
+Additionally to maintaining a strict demarcation between code and data, an
+instrument package can also serve other projects within an instrument
+consortium. The packages serve as a living-repository for the most up-to-date
+technical descriptions of certain elements of the instrument. For example, the
+package will contain and the very minimum a list of all filters and their
+transmission curves, an estimate of the PSF
+
+The IRDB already contains packages for the following instruments: MICADO and
+METIS at the ELT, and HAWKI at the VLT. More will be added in the near future.
+The guidelines for creating custom packages are in the ScopeSim online
+documentation and the community is encouraged to contribute to the library of
+packages already available.
 
 
+Conclusion
+++++++++++
 
-
-- functions to create Source objects
-- can be made from
-
-
-
-
-IRDB
-++++
-Th
 
 
 - yaml
 - plug-in effects
-- hosting
-- build your own
-
-
-
-
-
-By using this method ScopeSim is able to
-both keep memory and processor requirements to a minimum, while
-
-
-
-
-
-
-
-
-
-- series of interlinking parts
-    - Description of source (ScopeSim_templates)
-    - Information about optical train and observing modes (IRDB packages)
-    - Physical model
-    - Effects
-    - Controlling simulations
-
-
-
-
-
-
-
-
-
-
-- brief description
-- 4 planes
-- 3 control classes
-- effects objects
-- simulation run
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
