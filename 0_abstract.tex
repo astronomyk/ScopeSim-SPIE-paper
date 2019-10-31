@@ -53,6 +53,7 @@ Where does ScopeSim get its data from?
 
 
 What is ScopeSim?
+-----------------
 ScopeSim is a pythonic instrument data simulation framework, which allows the
 user to generate output data from an astronomical optical (telescope +
 instrument) system in a variety of formats. The package has been designed and
@@ -102,12 +103,163 @@ ScopeSim aims to fill.
 
 
 Scope of simulations
+--------------------
 - Full raw data products for pipelines
 - Reduced stacked data for science feasibility studies
 - Restricted mode advanced ETC functionality
 
 
+How does ScopeSim work?
+-----------------------
+ScopeSim consists of two major software components, and a database system. The
+software components are split between the tasks of describing an on-sky object
+and observing this object. The database contains the data necessary to model the
+effects of the optical system on the incoming light. These three components are
+referred to as the ScopeSim engine (scopesim), the ScopeSim templates library
+(scopesim_templates) and the instrument reference database (IRDB). Each
+component will be described in detail below.
 
+The ScopeSim engine
++++++++++++++++++++
+The main workhorse class of the ScopeSim engine is the OpticalTrain class. This
+class is responsible for accepting a Source object from the templates library,
+extracting the relevant field of view, generating a model of the optical system
+in memory from data supplied by the IRDB, applying all optical and electronic
+aberrations and effects, and finally piecing together the output in the format
+defined by the user (FITS images, spectra, etc).
+
+An OpticalTrain uses a physically motivated series of actions to observe an
+on-sky object. ScopeSim does not use either ray-tracing or
+Fraunhofen/Frenel-optics methods to create images of the target. Instead it
+cuts the target description into many spatial and spectral slices, applies the
+necessary effects to each slice, and projects each slice onto a focal plane
+canvas, known as the ``photo-electron expectation map''. Here electronic
+effects are applied and the Detector objects extract the information needed to
+produce the final data products. The effects used are each their own Python
+class and can contain either analytical or numerical descriptions of the action.
+While the ScopeSim engine package already contains a large list of common
+optical effects, custom effects can be added by third parties using the
+IRDB effect plug-in framework.
+
+Internally the OpticalTrain contains two manager classes: the field-of-view
+manager (FOVManager) and the effects manager (OpticsManager). The FOVManager
+maintains an overview of which sections of the spectro-spatial domain has been
+sampled and projected onto the focal plane. The OpticsManager collates and
+controls when and how each optical effect is applied to the incoming flux
+slices. For example, it would be computationally inefficient to apply the
+transmission curves of each optical surface individually to the flux slices, so
+the OpticsManager generates a system transmission curve when the OpticalTrain is
+initialised and applies only this single curve to spectra used to describe the
+target.
+
+This architecture gives ScopeSim great flexibility. By splitting the Source
+object into quasi-monochromatic image chunks, ScopeSim mimics what happens
+inside a real optical system. Each chunk is shifted, distorted, blurred, and
+extincted as if it were passing through the various optical surfaces
+of a real observatory. Due to this method, most variations on the classic
+optical system can be implemented in ScopeSim with relative ease. A long slit
+spectrograph is an imager where the monochromatic slices are dispersed
+over the focal plane. An integral field spectrograph can be modelled as a series
+of long slit spectrographs. A fibre-fed multi-object spectrograph is a series of
+hexagonal ``slits'' which throw away spatial information. A coronagraph is an
+imager with a customised PSF description. Each of these systems can be
+implemented relatively painlessly with the ScopeSim architecture as long as an
+analytical or (interpolatable) numerical description exists for each
+instrumental effect in the form of a ScopeSim Effect object.
+
+Not only does this software architecture allow most types of instruments to be
+implemented in ScopeSim, it also means that astronomers will be able to use a
+single platform to compare simulated observations in an apples-to-apples
+fashion.
+
+Effects already implemented in the ScopeSim engine include:
+- Spectral effects:
+    - Mirror transmission
+    - Mirror greybody emission
+    - Customisable sky transmission and emission, downloaded directly from the
+      ESO SkyCalc tool API
+
+- Spatial effects:
+    - Seeing and diffraction limited PSF, both varying and constant in the
+      spatial and spectral domains
+    - Spectrograph trace maps
+    - Atmospheric diffraction
+    - Non common path aberrations
+    - Wind shake and vibrations
+    - Optical distorsion
+
+- Electronic effects
+    - Quantum efficiency
+    - Dark current
+    - Various form of read noise (mainly for HAWAII HgCdTe detectors)
+    - Linearity and saturation
+    - Shot noise
+
+This is not an exhaustive list of effects, and more will be added over time as
+the package matures. The community is also invited to contribute to this list
+via Pull-Requests on the ScopeSim GitHub page.
+
+
+The ScopeSim template library
++++++++++++++++++++++++++++++
+
+
+
+
+
+
+- functions to create Source objects
+- can be made from
+
+
+
+
+IRDB
+++++
+Th
+
+
+- yaml
+- plug-in effects
+- hosting
+- build your own
+
+
+
+
+
+By using this method ScopeSim is able to
+both keep memory and processor requirements to a minimum, while
+
+
+
+
+
+
+
+
+
+- series of interlinking parts
+    - Description of source (ScopeSim_templates)
+    - Information about optical train and observing modes (IRDB packages)
+    - Physical model
+    - Effects
+    - Controlling simulations
+
+
+
+
+
+
+
+
+
+
+- brief description
+- 4 planes
+- 3 control classes
+- effects objects
+- simulation run
 
 
 
