@@ -15,16 +15,17 @@ Abstract for online - 1000 characters
 ScopeSim is a python-based software framework that allows the user to generate
 simulated images of astronomical objects as would be seen by the detectors of
 an arbitrary optical system. The package allows multiple types of optical system
-to be modelled: from simple imaging cameras to integral field unit spectrographs.
+to be modelled: from simple imaging cameras to integral field unit
+spectrographs.
 
 The software architecture is based on a physically motivated model common to all
-astronomical optical systems. The model mirrors the main components of any real
+astronomical optical systems. The model mimics the main components of any real
 optical system: a spectro-spatial distribution of light passing through a series
 of optical sub-systems (atmosphere, telescope, fore-optics, instrument) before
 being converted into photo-electrons in a detector.
 
 ScopeSim itself is however instrument-agnostic. When in use, a ScopeSim
-instrument model rerequired data from an ``instrument package'', which are
+instrument model loads data from ``instrument packages'', which are
 downloaded as needed from an external server. Currently such packages have been
 created for two of the ELT's first-light instruments: MICADO and METIS.
 
@@ -65,41 +66,41 @@ detector.
 
 The software itself is agnostic to the optical train it must model, and
 relies on the information provided by so-called ``instrument packages''.
-These contain the descriptions of any optical aberations or effects incurred
+These contain the descriptions of any optical aberrations or effects incurred
 along the optical train, the data and/or values associated with these
 effects, and, in special cases, also the software implementation of any
-custom effects. The online ScopeSim documenation provides a detailed
+custom effects. The online ScopeSim documentation provides a detailed
 description of the data formats and interfaces that need to be observed when
 constructing an instrument package.
 
 The raison d'etre for ScopeSim is to fill the niche that exists between the
 two major families of observation simulations currently pursued by instrument
-consortia: the exposure time calculator (ETC) and the end-to-end (E2E ) model.
+consortia: the exposure time calculator (ETC) and the end-to-end (E2E) model.
 ETCs provide the most basic information about the observability of a target,
 generally be referencing pre-calculated look-up tables, and are therefore
 well suited as general-purpose support tools for those interested in the
 capabilities of an instrument. E2E models are at the other extreme, and
 often recompute the paths of photons or light-rays through a detailed model
 of an optical system every time a simulation is run. The very high level of
-accuracy achieved by E2E simulations comes at the expense of compuational
-efficiency. Such simulation are indispensible for understanding the fine
-details of true optical characterises of an instrument, however they are
+accuracy achieved by E2E simulations comes at the expense of computational
+efficiency. Such simulation are indispensable for understanding the fine
+details of the true optical characteristics of an instrument. However they are
 impractical for rapid turn-around applications such as refining an
-observation strategy or determining the extent to which a bright field star
-will impact the outcome of a proposal.
+observing strategy or determining the extent to which a bright field star
+will impact the outcome of a observation.
 
 Given the ever increasing pressure for telescope time as well as the
 increasing complexity of instrumentation systems, there is a very real need
 for a set of observation simulation tools which allow astronomers to go
-beyond the single-value metric of an ETC, but does not require the
+beyond the single-value metric of an ETC, but which do not require the
 infrastructure and time-investment associated with E2E simulations. In recent
 years several consortia have developed solutions to fill this niche, driven
 primarily by the needs of the in-house science team and the astronomical
-community. A prime example is the software suite developed by the JWST team
-[!cite JWST!]. Unfortunately though there is still no generic software
+community. A prime example is the software suite developed by the JWST team.
+Unfortunately though there is still no generic software
 package which allows astronomers to compare observations with different
-instruments on a single coherent framework. It is exactly this niche that
-ScopeSim aims to fill.
+instruments and telescopes on a single coherent framework. It is exactly this
+niche which ScopeSim aims to fill.
 
 
 Scope of simulations
@@ -109,41 +110,42 @@ with varying levels of fidelity, depending on the use case. The original purpose
 of ScopeSim was to provide mock data sets to the MICADO data reduction pipeline
 team for testing purposes. These data sets include a series of raw images as
 would be produced by the detector electronics at read-out time. As such they
-need to include all the optical artifacts produces by the entire optical system.
+need to include all the optical artifacts produced by the entire optical system.
 
-Such data sets are however large and ungainly, and are unsuited to the every-day
-astronomer. Simulating a full raw data set and then reducing this down to a
-science-ready data product for a science case feasibility studies is a taxing
-task, both computationally and mentally. Hence different instrument package
-configurations can be used to circumvent these time consuming steps. Instead,
-ScopeSim generated a single output data set (either images or spectra) to which
-reduction artifact residuals are applied. These residuals represent the average
-level of data degradation that can be expected to occur during the observation
-and reduction steps. Such data sets are therefore comparable to the final
-science-ready data that can be expected for a given instrument.
+Such data sets are however large and ungainly, and are not suitable for the
+every-day astronomer. Simulating a full raw data set and then reducing this
+down to a science-ready data product for a science case feasibility study is
+a taxing task, both computationally and mentally. Hence different instrument
+package configurations can be used to circumvent these time consuming steps.
+Instead, ScopeSim can generate a single output data set (either images or
+spectra) to which reduction artifact residuals are applied. These residuals
+represent the average combined level of data degradation that can be expected to
+occur during the observation and reduction steps. Such data sets are therefore
+comparable to the final science-ready data that can be expected for a given
+instrument.
 
 Depending on the complexity of a given instrument, such simulations may also
 take longer than is necessary to answer a given question. For example, the user
 will not want to invest minutes of computation time to determine whether a
 single star is visible for a given magnitude and exposure time. ScopeSim can
 also provide simulated data products similar in scope to the output of an
-exposure time calculator (ETC) by using an ETC-style instrument package format.
-Such instrument packages contain relatively little information about the details
-of optical artifacts (generally a single system transmission curve and a
-description of the PSF) however return the requested signal to noise information
-is a very timely fashion.
+exposure time calculator (ETC) by using an ETC-style instrument package.
+Such instrument packages contain relatively little information about the
+fine details of optical artifacts (generally a single system transmission curve
+and a description of the PSF) however return the requested signal to noise
+information is a very timely fashion.
 
 It should be stressed once more that ScopeSim relies on artifact descriptions
 generated by other teams to create the simulated data sets. Hence, in contrast
 to E2E models, the quality of the output data is only ever as good as the
 quality of the data contained in the instrument packages. However assuming a
-high level of detail is included in an instrument package, ScopeSim can provide
+high level of detail is included in a package, ScopeSim can provide
 simulated data sets that cover a large range of applications.
 
 
 How does ScopeSim work?
 -----------------------
-ScopeSim consists of two major software components, and a database system. The
+ScopeSim consists of two major software components and a database system. The
 software components are split between the tasks of describing an on-sky object
 and observing this object. The database contains the data necessary to model the
 effects of the optical system on the incoming light. These three components are
@@ -158,32 +160,31 @@ The main workhorse class of the ScopeSim engine is the OpticalTrain class. This
 class is responsible for accepting a Source object from the templates library,
 extracting the relevant field of view, generating a model of the optical system
 in memory from data supplied by the IRDB, applying all optical and electronic
-aberrations and effects, and finally piecing together the output in the format
+aberrations and effects, and finally generating the output in the format
 defined by the user (FITS images, spectra, etc).
 
 An OpticalTrain uses a physically motivated series of actions to observe an
-on-sky object. ScopeSim does not use either ray-tracing or
-Fraunhofen/Frenel-optics methods to create images of the target. Instead it
-cuts the target description into many spatial and spectral slices, applies the
-necessary effects to each slice, and projects each slice onto a focal plane
-canvas, known as the ``photo-electron expectation map''. Here electronic
-effects are applied and the Detector objects extract the information needed to
-produce the final data products. The effects used are each their own Python
-class and can contain either analytical or numerical descriptions of the action.
-While the ScopeSim engine package already contains a large list of common
-optical effects, custom effects can be added by third parties using the
-IRDB effect plug-in framework.
+on-sky object. ScopeSim uses neither ray-tracing nor Fraunhofen/Frenel-optics
+methods to create images of the target. Instead it cuts the target description
+into many spatial and spectral slices, applies the necessary effects to each
+slice, and projects each slice onto a focal plane canvas, known as the
+``photo-electron expectation map''. Here electronic effects are applied and the
+Detector objects extract the information needed to produce the final data
+products. Effects are described by Python classes and can contain
+either analytical or numerical descriptions of the action. While the ScopeSim
+engine package already contains a large list of common optical effects, custom
+effects can be added by third parties using the IRDB effect plug-in framework.
 
 Internally the OpticalTrain contains two manager classes: the field-of-view
 manager (FOVManager) and the effects manager (OpticsManager). The FOVManager
-maintains an overview of which sections of the spectro-spatial domain has been
+maintains an overview of which sections of the spectro-spatial domain have been
 sampled and projected onto the focal plane. The OpticsManager collates and
 controls when and how each optical effect is applied to the incoming flux
 slices. For example, it would be computationally inefficient to apply the
-transmission curves of each optical surface individually to the flux slices, so
+transmission curves of each optical surface individually to each flux slice, so
 the OpticsManager generates a system transmission curve when the OpticalTrain is
-initialised and applies only this single curve to spectra used to describe the
-target.
+initialised and applies only this single curve to the target's associated
+spectra.
 
 This architecture gives ScopeSim great flexibility. By splitting the Source
 object into quasi-monochromatic image chunks, ScopeSim mimics what happens
@@ -240,7 +241,7 @@ The ScopeSim template library is a collection of helper functions which produce
 Source objects to be observed by the ScopeSim engine. A Source object must
 contain a spatial and a spectral description of the target object. The spatial
 description can be in the form of a table of positions if the target objects are
-point sources, or as a flux map (e.g. FITS image, bitmap, etc.) is the the
+point sources, or as a flux map (e.g. FITS image, bitmap, etc.) if the
 target is an extended object like a galaxy. The spectral description can either
 be a data array containing wavelength and flux information, or a simple
 description of a spectral source (e.g. "A0V") scaled to a certain magnitude
@@ -250,15 +251,16 @@ The associated spectrum, much like any input image can have any resolution,
 however it should be clear to the user that ScopeSim output data will never
 have better resolution than the original input data. If the user does not
 possess the spectra required to build a Source object, they can choose from a
-one of the in-built spectra from either the Pickles 1998 stellar spectra
-catalogue, or the Brown 2014 galaxy spectra catalogue.
+one of the in-built spectra from either the Pickles (1998) stellar spectra
+catalogue or the Brown (2014) galaxy spectra catalogue.
 
 Given that the user will spend the majority of their time building a description
 of their target, and that the associated functions have nothing to do with the
 core code of the ScopeSim engine, we felt it prudent to maintain the
 ScopeSim_templates code in a separate package. This also allows code to be added
-and removed from the repository without affecting the ScopeSim engine package.
-Hence the template library can follow a completely independent release schedule.
+to and removed from the repository without affecting the ScopeSim engine
+package. Hence the template library can follow a completely independent release
+schedule.
 
 
 Instrument packages and the IRDB
@@ -266,29 +268,29 @@ Instrument packages and the IRDB
 In order to maintain as much flexibility as possible, the ScopeSim engine
 code base must remain completely detached from any instrument specific data.
 Not only does this allow for a clean interface between the software design and
-development and the data being delivered by an instrument consortium, it
-allows the functionality of the software to written in a independently testable
-manner, and is just good software practice.
+the data being delivered by an instrument consortium, it allows the
+functionality of the software to written in a independently testable manner.
+It is also just good software practice.
 
-As such any instrument specific data (e.g. transmission values, PSF
-descriptions, mode specific values, etc.) are keep in an zip archive and
+Any instrument specific data (e.g. transmission values, PSF
+descriptions, mode specific values, etc.) are kept in a zip archive and
 formatted according to a set of interface guidelines. Files belonging to a
 package are kept under version control on Github. Whenever a new package release
 is requested, these files are tested, bundled, and uploaded onto a server.
 
-ScopeSim downloads directly packages directly from this server whenever the user
+ScopeSim downloads packages directly from this server whenever the user
 instructs ScopeSim to use a certain instrument for a simulation run. If the
 package has been used for a prior simulation, it will be loaded from the local
 astropy cache folder, unless a newer version is available. In this case the
-newer version is downloaded again. This caching system allows ScopeSim to also
-work when the host computer is offline.
+newer version is downloaded and replaces the cached version. This caching system
+allows ScopeSim to also work when the host computer is offline.
 
-Additionally to maintaining a strict demarcation between code and data, an
+Aside from enabling a strict demarcation between code and data, an
 instrument package can also serve other projects within an instrument
 consortium. The packages serve as a living-repository for the most up-to-date
 technical descriptions of certain elements of the instrument. For example, the
 package will contain and the very minimum a list of all filters and their
-transmission curves, an estimate of the PSF.
+transmission curves and a description of the expected PSF.
 
 The IRDB already contains packages for the following instruments: MICADO and
 METIS at the ELT, and HAWKI at the VLT. More will be added in the near future.
