@@ -1,0 +1,27 @@
+Outline
+-------
+- IRDB
+    - Data pertaining to an instrument
+    - Custom Effects
+    - Scalable level of complexity
+        - ETC
+        - Clean (science grade) simulated data
+        - Dirty (pipeline grade) simulated data
+    - Reusable components
+        - Primary packages (instrument)
+        - Support packages (telescope, atmosphere, relay optics)
+    - YAML based human readable configuration files (extended json)
+        - Observing mode support
+        - default.yaml
+        - <instrument_name>.yaml
+        - <observing_mode>.yaml
+        - descriptions of effects
+            - contains class name - must be valid class from scopesim.effects
+            - passes keyword-value dictionary using **kwargs from yaml
+    - Data needed by each Effect
+        - Provided directly in YAML file
+        - ASCII of FITS file pointer in YAML file
+        - Examples: Transmission curves, PSF images, spectrscopic trace geometry
+    - Set data format interface between Effects and data files
+    - Test suite connected to Travis-CI to verify correct data format
+

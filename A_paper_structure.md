@@ -1,12 +1,19 @@
 Introduction
 ------------
-- What is ScopeSim
+- What is the ScopeSim software ecosystem
 - What is the need for ScopeSim
 - What niche does it fill? I.e. not ETC, not E2E
 - Background of ScopeSim - ELT, SimCADO, HSIM, SimMETIS
 
-Architecture
-------------
+Ecosystem
+---------
+- ScopeSim engine
+    - Effect plugins
+- ScopeSim templates
+- IRDB
+
+ScopeSIm Architecture
+---------------------
 - 4 main layers     
     - Source
     - FOV

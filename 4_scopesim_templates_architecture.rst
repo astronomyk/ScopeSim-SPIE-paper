@@ -1,0 +1,24 @@
+Outline
+-------
+- Sky Templates
+    - Functions for generating representations of on-sky objects
+    - Basic series of function provided
+        - stars
+            - star field
+            - cluster
+            - field population
+        - galaxies
+            - two component spiral
+            - elliptical
+    - Open for community input to extend object base
+        - E.g. connection to Illustris database API, Simbad, Vizier, Astroquery, etc
+        - More interesting objects like globular clusters, near universe simulated galaxies, galactic centre, etc
+    - Source object interface
+        - .fields list
+            - ASCII tables of point sources
+            - ImageHDUs
+        - .spectra list
+            - synphot.SourceSpectrum
+        - template functions can accept magnitudes, but Source object must contain a spectrum for each point
+        - spectral cubes are permissible, but should be converted into either a point source table of spectra, or an N-chromatic list of images+spectra
+
